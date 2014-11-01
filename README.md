@@ -1,6 +1,6 @@
 # Nature indirect costs
 
-Working process to combine excel files.
+Working process to combine and examine large excel files.
 
 ## Process NIH Reporter data
 
@@ -8,7 +8,7 @@ Working process to combine excel files.
 
 From `Copy of Worldwide2013.xls` save Sheet 2 only as `nih-reporter.xlsx`.
 
-### Convert form Excel to csv
+### Convert from Excel to csv
 
 Install [csvkit](http://csvkit.readthedocs.org/en/0.9.0/index.html).
 
@@ -73,3 +73,30 @@ remove the working file `joined.csv`.
 	python python/missing_entries.py csv/indirect-costs.csv csv/nih-reporter-summed.csv csv/discrepancies.csv
 
 	wc -l csv/discrepancies.csv
+
+## Examine the data
+
+Examine the first ten lines of just `Organization Name`,`ORG_STATE/ORG_COUNTRY`,`FY13`,`Funding`,`Calculated Indirect cost`.
+
+	csvcut -c 'Organization Name','ORG_STATE/ORG_COUNTRY','FY13','Funding','Calculated Indirect cost' csv/indirect-costs-calculated.csv | csvlook | head
+
+Present statistics from the file.
+
+	csvcut -c 'Organization Name','ORG_STATE/ORG_COUNTRY','FY13','Funding','Calculated Indirect cost' csv/indirect-costs-calculated.csv | csvstat
+
+Look at the institutions that received the most funding
+
+	csvcut -c 'Organization Name','ORG_STATE/ORG_COUNTRY','FY13','Funding','Calculated Indirect cost' csv/indirect-costs-calculated.csv | csvsort -c 'Funding' -r | csvlook | head
+
+Look at the institution with the highest indirect costs.
+
+	csvcut -c 'Organization Name','ORG_STATE/ORG_COUNTRY','FY13','Funding','Calculated Indirect cost' csv/indirect-costs-calculated.csv | csvsort -c 'Calculated Indirect cost' -r | csvlook | head
+
+Highest funding in New York.
+
+	csvcut -c 'Organization Name','ORG_STATE/ORG_COUNTRY','FY13','Funding','Calculated Indirect cost' csv/indirect-costs-calculated.csv | csvgrep -c 'ORG_STATE/ORG_COUNTRY' -m 'NEW YORK' | csvsort -c 'Funding' -r | csvlook | head
+
+Highest funding in California.
+
+	csvcut -c 'Organization Name','ORG_STATE/ORG_COUNTRY','FY13','Funding','Calculated Indirect cost' csv/indirect-costs-calculated.csv | csvgrep -c 'ORG_STATE/ORG_COUNTRY' -m 'CALIFORNIA' | csvsort -c 'Funding' -r | csvlook | head
+
