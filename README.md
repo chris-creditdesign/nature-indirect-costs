@@ -68,4 +68,8 @@ remove the working file `joined.csv`.
 
 	rm csv/joined.csv
 
+## Work out number of discrepancies between datasets
 
+	python python/missing_entries.py csv/indirect-costs.csv csv/nih-reporter-summed.csv csv/discrepancies.csv
+
+	wc -l csv/discrepancies.csv
