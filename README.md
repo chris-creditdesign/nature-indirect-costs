@@ -54,10 +54,18 @@ Convert the excel file into a csv containing just the first four columns, repres
 
 ## Join the two csv files
 
-Merge the two csv files using `Organization Name` as the column name on which to join
+Merge the two csv files using `Organization Name` as the column name on which to join.
 
 	csvjoin -c 'Organization Name' csv/indirect-costs.csv csv/nih-reporter-summed.csv > csv/joined.csv
 
+## Calculate the indirect costs
 
+Run `calculate_indirect_costs.py` to add a new column `Calculated Indirect cost` to show `Indirect Cost` as a percentage of `Direct Cost`.
+
+	python python/calculate_indirect_costs.py csv/joined.csv csv/indirect-costs-calculated.csv
+
+remove the working file `joined.csv`.
+
+	rm csv/joined.csv
 
 
