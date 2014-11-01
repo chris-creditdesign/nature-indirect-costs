@@ -26,6 +26,26 @@ There should now just be one entry for each organization. You can check the amou
 
 	wc -l csv/nih-reporter.csv
 
-###
+### Extract the relevant Excel sheet
 
 Copy Sheet 1 from `Indirect costs worksheet.xlsx` to a new work book 'indirect-costs.xlsx'
+
+### Convert form Excel to csv
+
+Convert the excel file into a csv containing just the first four columns, representing ORG_NAME, ORG_CITY, ORG_STATE/ORG_COUNTRY, FY12, FY13 and Institution type.
+
+	in2csv excel/indirect-costs.xlsx | csvcut -c 1,2,3,4,5,6 > csv/indirect-costs.csv
+
+### Replace the header
+
+	cat csv/indirect-costs.csv | sed "1 d" > csv/headerless.csv
+
+	echo "Organization Name, ORG_CITY, ORG_STATE/ORG_COUNTRY, FY12, FY13, Institution type" | cat - csv/headerless.csv > csv/indirect-costs.csv
+
+	rm csv/headerless.csv
+
+
+
+
+
+
