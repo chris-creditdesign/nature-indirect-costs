@@ -16,11 +16,15 @@ Convert the excel file into a csv containing just the first four columns, repres
 
 	in2csv excel/nih-reporter.xlsx | csvcut -c 1,2,3,4 > csv/nih-reporter.csv
 	
+### Remove duplicate names for the same organization
+
+	python python/remove_duplicate_names.py csv/nih-reporter.csv csv/nih-reporter-cleaned.csv
+
 ### Sum up all of the grants
 
 Run `sum_costs.py` to create a new csv file with all of the grants for each organization summed
 
-	python python/sum_costs.py csv/nih-reporter.csv csv/nih-reporter-summed.csv
+	python python/sum_costs.py csv/nih-reporter-cleaned.csv csv/nih-reporter-summed.csv
 
 There should now just be one entry for each organization. You can check the amount of lines in each file with.
 
@@ -28,9 +32,11 @@ There should now just be one entry for each organization. You can check the amou
 
 	wc -l csv/nih-reporter.csv
 
-You can now remove the working file.
+You can now remove the working files.
 
 	rm csv/nih-reporter.csv
+
+	rm csv/nih-reporter-cleaned.csv
 
 ## Process Indirect Costs data
 
@@ -106,3 +112,24 @@ Highest funding in California.
 
 	csvcut -c 'Organization Name','ORG_STATE/ORG_COUNTRY','FY13','Funding','Calculated Indirect cost' csv/indirect-costs-calculated.csv | csvgrep -c 'ORG_STATE/ORG_COUNTRY' -m 'CALIFORNIA' | csvsort -c 'Funding' -r | csvlook | head
 
+
+Check that MASSACHUSETTS GENERAL HOSPITAL is correct
+
+	csvcut -c 'Organization Name','ORG_STATE/ORG_COUNTRY','FY13','Funding','Calculated Indirect cost' csv/indirect-costs-calculated.csv | csvgrep -c 'Organization Name' -m 'MASSACHUSETTS GENERAL HOSPITAL' | csvlook
+
+
+Check that OHIO STATE UNIVERSITY is correct
+
+	csvcut -c 'Organization Name','ORG_STATE/ORG_COUNTRY','FY13','Funding','Calculated Indirect cost' csv/indirect-costs-calculated.csv | csvgrep -c 'Organization Name' -m 'OHIO STATE UNIVERSITY' | csvlook
+
+Experimental technique to sum columns 
+
+First convert from commas to pipes to account for commas in names
+
+	csvformat -D "|" test.csv test_pipe.csv
+
+Then work out the total for column 4 in this instance. 
+
+	sed '1d' test_pipe.csv | awk -F"|" '{print $4; x+=$4}END{print "Total, " x}'
+
+Perhaps this could be printed to a new file or concatenated to the end?
