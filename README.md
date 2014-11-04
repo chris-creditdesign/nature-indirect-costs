@@ -82,6 +82,13 @@ remove the working file `joined.csv`.
 
 	wc -l csv/discrepancies.csv
 
+## Restore the organizations that have no 2013 grant data
+
+	python python/restore_missining_orgs.py csv/indirect-costs.csv csv/discrepancies.csv csv/restore.csv
+
+	csvstack csv/indirect-costs-calculated.csv csv/restore.csv > csv/indirect-costs-calculated-combined.csv
+
+
 ## Examine the data
 
 Examine the first ten lines of just `Organization Name`,`ORG_STATE/ORG_COUNTRY`,`FY13`,`Funding`,`Calculated Indirect cost`.
