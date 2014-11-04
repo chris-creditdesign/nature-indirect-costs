@@ -14,8 +14,7 @@ for row in reader:
 for i, v in enumerate(list_all_orgs):
 	if v['Organization Name'] == "Ohio State University": v['Organization Name'] = "OHIO STATE UNIVERSITY"
 	elif v['Organization Name'] == "MASSACHUSETTS GENERAL HOSP": v['Organization Name'] = "MASSACHUSETTS GENERAL HOSPITAL"
-	elif v['Organization Name'] == "YESHIVA UNIVERSITY": 
-		v['Organization Name'] = "ALBERT EINSTEIN COL OF MED(See YESHIVA UNIV)"
+	elif v['Organization Name'] == "YESHIVA UNIVERSITY": v['Organization Name'] = "ALBERT EINSTEIN COL OF MED(See YESHIVA UNIV)"
 	elif v['Organization Name'] == "WEILL MEDICAL COLL OF CORNELL UNIV": v['Organization Name'] = "WEILL MEDICAL COLLEGE OF CORNELL UNIV"
 	elif v['Organization Name'] == "VANDERBILT UNIVERSITY MED CTR": v['Organization Name'] = "VANDERBILT UNIVERSITY"
 	elif v['Organization Name'] == "UT MD ANDERSON CANCER CTR": v['Organization Name'] = "UNIVERSITY OF TEXAS MD ANDERSON CAN CTR"
@@ -84,8 +83,6 @@ for i, v in enumerate(list_all_orgs):
 	elif v['Organization Name'] == "BOSTON UNIVERSITY MEDICAL CAMPUS": v['Organization Name'] = "BOSTON UNIVERSITY"
 	elif v['Organization Name'] == "BOSTON UNIVERSITY (CHARLES RIVER CAMPUS)": v['Organization Name'] = "BOSTON UNIVERSITY"
 	else: pass
-
-print len(list_all_orgs)
 
 fieldnames = ('Organization Name','Direct Cost', 'Indirect Cost', 'Funding')
 
