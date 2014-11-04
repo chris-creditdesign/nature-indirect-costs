@@ -16,7 +16,9 @@ Convert the excel file into a csv containing just the first four columns, repres
 
 	in2csv excel/nih-reporter.xlsx | csvcut -c 1,2,3,4 > csv/nih-reporter.csv
 	
-### Remove duplicate names for the same organization
+### Remove duplicate and discrepancies
+
+Account for duplicate names for the same organization and make organization names match the names used in `Indirect costs worksheet.xlsx`.
 
 	python python/remove_duplicate_names.py csv/nih-reporter.csv csv/nih-reporter-cleaned.csv
 
@@ -58,17 +60,11 @@ Convert the excel file into a csv containing just the first four columns, repres
 
 	rm csv/headerless.csv
 
-### Remove the discrepancies
-
-	python python/remove_discrepancies.py csv/indirect-costs.csv csv/indirect-costs-cleaned.csv
-
-	rm csv/indirect-costs.csv
-
 ## Join the two csv files
 
 Merge the two csv files using `Organization Name` as the column name on which to join.
 
-	csvjoin -c 'Organization Name' csv/indirect-costs-cleaned.csv csv/nih-reporter-summed.csv > csv/joined.csv
+	csvjoin -c 'Organization Name' csv/indirect-costs.csv csv/nih-reporter-summed.csv > csv/joined.csv
 
 ## Calculate the indirect costs
 
@@ -82,7 +78,7 @@ remove the working file `joined.csv`.
 
 ## Work out number of discrepancies between datasets
 
-	python python/missing_entries.py csv/indirect-costs-cleaned.csv csv/nih-reporter-summed.csv csv/discrepancies.csv
+	python python/missing_entries.py csv/indirect-costs.csv csv/nih-reporter-summed.csv csv/discrepancies.csv
 
 	wc -l csv/discrepancies.csv
 
